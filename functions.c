@@ -58,35 +58,19 @@ int classic_search(int value, t_d_list *list){
     return -1;
 }
 
-int igh_search(int value, t_d_list *list){
-    int current_lvl = list->max_levels-1, pos;
-    t_d_cell *current = list->head[current_lvl];
-    while (current_lvl >= 0){
-        while (current != NULL){
-            if (value == current->value){
-                return 1;
-            }
-            if (value > current->value){
-
-            }
-            current = current->next[current_lvl];
-        }
-        current_lvl--;
-        current = list->head[current_lvl];
-    }
-    return -1;
-}
-
 int high_search(int value, t_d_list *list){
-    int current_lvl = list->max_levels;
-    t_d_cell *current = list->head[current_lvl-1];
-    while (value != current->value && current_lvl >= 0){
-        current_lvl -= 1;
-        if (value > current->value){
-            current = current->next[current_lvl];
-        }
-        else{
-            current = list->head[current_lvl];
+    int current_lvl = list->max_levels-1;
+    t_d_cell *current = list->head[current_lvl];
+    if (value < pow(2, list->max_levels)){
+        while (value != current->value && current_lvl >= 0){
+            current_lvl -= 1;
+            if (value > current->value){
+                list->head = current->next;
+                current = current->next[current_lvl];
+            }
+            else{
+                current = list->head[current_lvl];
+            }
         }
     }
     if (value == current->value){
